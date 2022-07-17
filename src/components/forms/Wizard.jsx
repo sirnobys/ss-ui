@@ -167,14 +167,14 @@ function Step1(props) {
   return (
     <MDBContainer>
       <MDBRow>
-        <MDBCol lg="6" md="6" sm="12">
+        <MDBCol lg="12" md="12" sm="12">
           <MDBInput
             label="First Name"
             type="text"
             required
           />
         </MDBCol>
-        <MDBCol lg="6" md="6" sm="12">
+        <MDBCol lg="12" md="12" sm="12">
           <MDBInput label="Last Name" type="text" required />
         </MDBCol>
       </MDBRow>
@@ -189,10 +189,10 @@ function Step2(props) {
   return (
     <MDBContainer>
       <MDBRow>
-        <MDBCol lg="6" md="6" sm="12">
+        <MDBCol lg="12" md="12" sm="12">
           <MDBInput label="Email" type="text" required />
         </MDBCol>
-        <MDBCol lg="6" md="6" sm="12">
+        <MDBCol lg="12" md="12" sm="12">
           <MDBInput label="Telephone" type="text" required />
         </MDBCol>
       </MDBRow>
