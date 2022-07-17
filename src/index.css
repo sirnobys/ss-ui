@@ -6,10 +6,10 @@ body  {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background-image: url('./ss-bg1.jpg'); */
-  background:linear-gradient(0deg, rgba(3, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./spl.jpg');
-  background-repeat: repeat-y;
+  background:linear-gradient(0deg, rgba(24, 2, 53, 0.8), rgba(110, 4, 40, 0.8)), url('./ss-bg1.jpg');
+  background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: auto;
+  background-size: cover;
 }
 
 code {
@@ -20,4 +20,25 @@ code {
 .heading{
   font-family: "Comic Sans MS", "Comic Sans", cursive;
   color: blueviolet
+}
+
+.form-bg{
+  background:linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), url('./spl.jpg');
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-size: auto;
+  background-position: center;
+}
+
+input{
+  color:black;
+  opacity: 1;
+  font-weight: bold;
+}
+.card {
+  flex-direction: row;
+}
+.card img {
+  width: 20%;
+  
 }
