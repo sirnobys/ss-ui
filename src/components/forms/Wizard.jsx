@@ -172,7 +172,6 @@ function Step1(props) {
             label="First Name"
             type="text"
             required
-            style={{ fontWeight: "bold" }}
           />
         </MDBCol>
         <MDBCol lg="6" md="6" sm="12">
