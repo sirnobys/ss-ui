@@ -1,7 +1,7 @@
 import React from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdbreact";
 import { MDBCheckbox, MDBRadio } from "mdb-react-ui-kit";
-import Image from "../../s1.svg";
+import Image from "../../s2.svg";
 import Chip from "@mui/material/Chip";
 import swal from "sweetalert";
 class MasterForm extends React.Component {
