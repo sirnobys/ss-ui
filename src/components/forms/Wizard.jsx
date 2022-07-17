@@ -9,11 +9,15 @@ class MasterForm extends React.Component {
     super(props);
     this.state = {
       currentStep: 1,
-      firstName:"",
-      lastName:"",
-      email:"",
-      tel:"",
-      gender:"",
+      firstName: "",
+      lastName: "",
+      email: "",
+      tel: "",
+      gender: "",
+      member: "",
+      firstTime: "",
+      location: "",
+      notify: "",
     };
   }
 
@@ -52,9 +56,7 @@ class MasterForm extends React.Component {
     }
   };
 
-  next = () => {
-
-  };
+  next = () => {};
 
   prev = () => {
     let currentStep = this.state.currentStep;
@@ -117,37 +119,39 @@ class MasterForm extends React.Component {
                 <Step1
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  email={this.state.email}
+                  firstName={this.state.firstName}
+                  lastName={this.state.lastName}
                 />
                 <Step2
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  username={this.state.username}
+                  email={this.state.email}
+                  tel={this.state.tel}
                 />
                 <Step3
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  password={this.state.password}
+                  gender={this.state.gender}
                 />
                 <Step4
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  password={this.state.password}
+                  member={this.state.member}
                 />
                 <Step5
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  password={this.state.password}
+                  firstTime={this.state.firstTime}
                 />
                 <Step6
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  password={this.state.password}
+                  location={this.state.location}
                 />
                 <Step7
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  password={this.state.password}
+                  notify={this.state.notify}
                 />
                 {this.previousButton()}
                 {this.nextButton()}
@@ -171,11 +175,21 @@ function Step1(props) {
           <MDBInput
             label="First Name"
             type="text"
+            name="firstName"
+            onChange={props.handleChange}
+            valueDefault={props.firstName}
             required
           />
         </MDBCol>
         <MDBCol lg="12" md="12" sm="12">
-          <MDBInput label="Last Name" type="text" required />
+          <MDBInput
+            label="Last Name"
+            type="text"
+            name="lastName"
+            onChange={props.handleChange}
+            valueDefault={props.lastName}
+            required
+          />
         </MDBCol>
       </MDBRow>
     </MDBContainer>
@@ -190,10 +204,24 @@ function Step2(props) {
     <MDBContainer>
       <MDBRow>
         <MDBCol lg="12" md="12" sm="12">
-          <MDBInput label="Email" type="text" required />
+          <MDBInput
+            label="Email"
+            name="email"
+            onChange={props.handleChange}
+            valueDefault={props.email}
+            type="text"
+            required
+          />
         </MDBCol>
         <MDBCol lg="12" md="12" sm="12">
-          <MDBInput label="Telephone" type="text" required />
+          <MDBInput
+            label="Telephone"
+            name="tel"
+            onChange={props.handleChange}
+            valueDefault={props.tel}
+            type="text"
+            required
+          />
         </MDBCol>
       </MDBRow>
     </MDBContainer>
@@ -216,12 +244,18 @@ function Step3(props) {
               name="gender"
               id="flexRadioDefault1"
               label="Male"
+              value="male"
+              onChange={props.handleChange}
+              checked={props.gender==="male"}
               required
               inline
             />
             <MDBRadio
               name="gender"
               id="flexRadioDefault2"
+              onChange={props.handleChange}
+              checked={props.gender==="female"}
+              value="female"
               label="Female"
               required
               inline
@@ -248,8 +282,11 @@ function Step4(props) {
             </div>
             <MDBRadio
               name="member"
+              value="yes"
               id="flexRadioDefault1"
               label="Yes"
+              checked={props.member==="yes"}
+              onChange={props.handleChange}
               inline
               required
             />
@@ -257,6 +294,9 @@ function Step4(props) {
               name="member"
               id="flexRadioDefault2"
               label="No"
+              value="no"
+              checked={props.member==="no"}
+              onChange={props.handleChange}
               inline
               required
             />
@@ -281,15 +321,21 @@ function Step5(props) {
               Is this your first time at the KICC Summit?
             </div>
             <MDBRadio
-              name="first"
+              name="firstTime"
               id="flexRadioDefault1"
               label="Yes"
+              value="yes"
+              checked={props.firstTime==="yes"}
+              onChange={props.handleChange}
               inline
               required
             />
             <MDBRadio
-              name="first"
+              name="firstTime"
               id="flexRadioDefault2"
+              value="no"
+              checked={props.firstTime==="no"}
+              onChange={props.handleChange}
               label="No"
               required
               inline
@@ -314,10 +360,16 @@ function Step6(props) {
               {" "}
               Kindly indicate if you will want to be picked by any of our buses.
             </div>
-            <select className="browser-default custom-select" required>
-              <option value="circle">Circle</option>
-              <option value="accra-mall">Accra Mall</option>
-              <option value="coca-cola">Coca-Cola</option>
+            <select
+              className="browser-default custom-select"
+              name="location"
+              required
+              onChange={props.handleChange}
+            >
+              <option value="" selected={props.notify===""}>...</option>
+              <option value="circle" selected={props.notify==="circle"}>Circle</option>
+              <option value="accra-mall" selected={props.notify==="accra-mall"}>Accra Mall</option>
+              <option value="coca-cola" selected={props.notify==="coca-cola"}>Coca-Cola</option>
             </select>
           </MDBCol>
         </MDBRow>
