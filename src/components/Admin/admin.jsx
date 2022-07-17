@@ -16,9 +16,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import MailIcon from '@mui/icons-material/Mail';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Widgets from "./Widgets";
 import Table from "./Table";
@@ -135,7 +133,7 @@ export default function Admin() {
           {['Off-site Form', 'On-site Form'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-                href={index==0?"/":"/onsite"}
+                href={index===0?"/":"/onsite"}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',

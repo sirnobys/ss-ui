@@ -1,6 +1,5 @@
 import React from "react";
-import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from "mdbreact";
-import banner from "../../ss-image.jpeg";
+import { MDBContainer, MDBRow, MDBCol, MDBInput } from "mdbreact";
 import { MDBCheckbox, MDBRadio } from "mdb-react-ui-kit";
 import swal from "sweetalert";
 
