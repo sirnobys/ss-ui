@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-
+import {GridToolbar } from '@mui/x-data-grid';
 const columns = [
   //   { field: 'id', headerName: 'ID', flex: 1 },
   {
@@ -79,6 +79,7 @@ export default function Table() {
         rows={rows}
         columns={columns}
         pageSize={5}
+        components={{ Toolbar: GridToolbar,  }}
         // rowsPerPageOptions={[5]}
         // checkboxSelection
       />

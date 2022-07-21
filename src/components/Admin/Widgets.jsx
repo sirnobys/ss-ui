@@ -4,13 +4,12 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const card = (heading, text) => {
   return (
     <Box>
-      <Card variant="outlined">
+      <Card variant="outlined" style={{borderColor:"rgba(116, 5, 131, 0.808)" }}>
         <React.Fragment>
           <CardContent>
             <Typography variant="body2">
@@ -20,7 +19,6 @@ const card = (heading, text) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">Learn More</Button>
           </CardActions>
         </React.Fragment>
       </Card>

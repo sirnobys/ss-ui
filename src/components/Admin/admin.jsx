@@ -103,7 +103,7 @@ export default function Admin() {
   return (
     <Box sx={{ display: 'flex' }} style={{background:"white"}}>
       <CssBaseline />
-      <AppBar position="fixed" style={{backgroundColor:"rgb(226, 43, 156)"}} open={open}>
+      <AppBar position="fixed" style={{backgroundColor:"rgba(116, 5, 131, 0.808)"}} open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -155,30 +155,7 @@ export default function Admin() {
           ))}
         </List>
         <Divider />
-        {/* <List>
-          {['All mail'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
