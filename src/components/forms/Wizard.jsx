@@ -5,10 +5,13 @@ import Image from "../../s2.svg";
 import kicc from "../../KICC.jpg";
 import Chip from "@mui/material/Chip";
 import swal from "sweetalert";
+import axios from "axios";
 
 import {
+  Backdrop,
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   InputLabel,
   ListItemText,
@@ -16,6 +19,9 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
+
+const baseUrl =
+  "http://single-summit.herokuapp.com";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,16 +41,16 @@ const mediaList = [
   "TV",
   "SMS",
   "Billboard",
-  "Sunny FM",
+  "Sunny-FM",
   "Newspaper",
-  "Sweet Melodies FM",
+  "Sweet-Melodies-FM",
 ];
 
 class MasterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 1,
+      currentStep: 6,
       firstName: "",
       lastName: "",
       email: "",
@@ -54,7 +60,21 @@ class MasterForm extends React.Component {
       firstTime: "",
       location: "",
       media: [],
+      load: false,
     };
+  }
+
+  SimpleBackdrop() {
+    return (
+      <div>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={this.state.load}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
+    );
   }
 
   handleChange = (event) => {
@@ -69,6 +89,49 @@ class MasterForm extends React.Component {
     }
   };
 
+  async submit() {
+    try {
+      let res = await axios({
+        method: "post",
+        url: baseUrl + "/SSRegistration/api/v1/register",
+        data: {
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          gender: this.state.gender,
+          telephone: this.state.tel,
+          email: this.state.email,
+          membershipStatus: this.state.member === "yes" ? true : false,
+          firstTimerStatus: this.state.firstTime === "yes" ? true : false,
+          publicityAvenue: this.state.media.join('_'),
+        },
+      });
+     
+      if (res){
+        this.setState({load:false})
+        swal("Form submitted successfully", {
+          icon: "success",
+        }).then((okay) => {
+          if (okay) {
+            window.location.reload()
+          }
+        });
+      }
+      // return data;
+    } catch (error) {
+      if (error){
+        this.setState({load:false})
+        swal("Submission failed", {
+          icon: "error",
+        }).then((okay) => {
+          if (okay) {
+          }
+        });
+      }
+      console.log(error); // this is the main part. Use the response property from the error object
+
+      return error.response;
+    }
+  }
   handleSubmit = (event) => {
     event.preventDefault();
     let currentStep = this.state.currentStep;
@@ -84,14 +147,9 @@ class MasterForm extends React.Component {
         buttons: true,
         dangerMode: false,
       }).then((confirm) => {
-        if (confirm) {
-          swal("Form submitted Successfully", {
-            icon: "success",
-          }).then((okay) => {
-            if (okay) {
-              window.location.reload();
-            }
-          });
+        if(confirm){
+          this.setState({load:true})
+            this.submit();
         }
       });
     }
@@ -141,77 +199,93 @@ class MasterForm extends React.Component {
         </Button>
       );
     }
+    if (currentStep === 6) {
+      return (
+        <Button
+          className="btn btn-success float-right"
+          type="submit"
+          variant="contained"
+        >
+          Submit
+        </Button>
+      );
+    }
     return null;
   }
 
   render() {
     return (
-      <MDBRow className="mt-5">
-        <MDBCol lg="2" md="2" sm="2"></MDBCol>
-        <MDBCol lg="8" md="8" sm="10">
-          <div className="text-center h2 text-white">
-            Single's Summit Registration
-          </div>
-          <div className="card main form-bg">
-            <img src={Image} alt="horse" />
-            <div className="card-body">
-              <div style={{ marginLeft: "25%" }}>
-                <img src={kicc} alt="horse" />
-                <br />
-                <br />
-              </div>
-              <div className="font-weight-bold">
-                <Chip label={"Step " + this.state.currentStep} />{" "}
-              </div>
+      <div>
+        {this.SimpleBackdrop()}
+        <MDBRow className="mt-5">
+          <MDBCol lg="2" md="2" sm="2"></MDBCol>
+          <MDBCol lg="8" md="8" sm="8">
+            <div className="text-center h2 text-white">
+              Single's Summit Registration
+            </div>
+            <div className="card main form-bg">
+              <img src={Image} alt="horse" />
+              <div className="card-body">
+                <div style={{ marginLeft: "25%" }}>
+                  <img src={kicc} alt="horse" />
+                  <br />
+                  <br />
+                </div>
+                <div className="font-weight-bold">
+                  <Chip label={"Step " + this.state.currentStep} />{" "}
+                </div>
 
-              <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}>
+                  {/* 
                 {/* 
+                  {/* 
         render the form steps and pass required props in
       */}
-                <Step1
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  firstName={this.state.firstName}
-                  lastName={this.state.lastName}
-                />
-                <Step2
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  email={this.state.email}
-                  tel={this.state.tel}
-                />
-                <Step3
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  gender={this.state.gender}
-                />
-                <Step4
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  member={this.state.member}
-                />
-                <Step5
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  firstTime={this.state.firstTime}
-                />
-                {/* <Step6
+                  <Step1
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    firstName={this.state.firstName}
+                    lastName={this.state.lastName}
+                  />
+                  <Step2
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    email={this.state.email}
+                    tel={this.state.tel}
+                  />
+                  <Step3
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    gender={this.state.gender}
+                  />
+                  <Step4
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    member={this.state.member}
+                  />
+                  <Step5
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    firstTime={this.state.firstTime}
+                  />
+                  {/* <Step6
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
                   location={this.state.location}
                 /> */}
-                <Step7
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  media={this.state.media}
-                />
-                {this.previousButton()}
-                {this.nextButton()}
-              </form>
+                  <Step7
+                    currentStep={this.state.currentStep}
+                    handleChange={this.handleChange}
+                    media={this.state.media}
+                  />
+                  {this.previousButton()}
+                  {this.nextButton()}
+                </form>
+              </div>
             </div>
-          </div>
-        </MDBCol>
-      </MDBRow>
+          </MDBCol>
+        </MDBRow>
+      </div>
     );
   }
 }
@@ -223,7 +297,7 @@ function Step1(props) {
   return (
     <MDBContainer>
       <MDBRow>
-        <MDBCol lg="9" md="9" sm="8">
+        <MDBCol lg="9" md="9" sm="12">
           <MDBInput
             label="First Name"
             type="text"
@@ -233,7 +307,7 @@ function Step1(props) {
             required
           />
         </MDBCol>
-        <MDBCol lg="9" md="9" sm="8">
+        <MDBCol lg="9" md="9" sm="12">
           <MDBInput
             label="Last Name"
             type="text"
@@ -451,7 +525,7 @@ function Step7(props) {
             <div className="mr-3 mb-3 mt-1 font-weight-bold">
               How did you hear about this event?
             </div>
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl sx={{ m: 1, minWidth:"200px", maxWidth:"250px" }}>
               <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
@@ -515,13 +589,13 @@ function Step7(props) {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-      <Button
+      {/* <Button
         type="submit"
         variant="contained"
         className="btn btn-success float-right"
       >
         Submit
-      </Button>
+      </Button> */}
     </React.Fragment>
   );
 }

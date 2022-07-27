@@ -5,8 +5,9 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 
-const card = (heading, text) => {
+const card = (heading, text,name, props) => {
   return (
     <Box>
       <Card variant="outlined" style={{borderColor:"rgba(116, 5, 131, 0.808)" }}>
@@ -15,7 +16,10 @@ const card = (heading, text) => {
             <Typography variant="body2">
               <div className="text-center font-weight-bold ">{heading}</div>
               <br />
-              <div className="text-center h4 heading">{text}</div>
+              <div className="text-center h4 heading">{text} 
+              <Button onClick={()=>props.defRow(name)}><span style={{fontSize:"11px"}}>{name==="ratio"?"":"view"}</span></Button>
+              </div>
+              
             </Typography>
           </CardContent>
           <CardActions>
@@ -26,24 +30,31 @@ const card = (heading, text) => {
   );
 };
 
-export default function FullWidthGrid() {
+export default function Widgets(props) {
+  const {data} = props
+  if (!props.data.ratio){
+    return 'loading'
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid item xs={6} md={2}>
-          <div>{card("Verified Participants", "10")}</div>
-        </Grid>
-        <Grid item xs={6} md={2}>
-          <div>{card("Registered Participants", "12")}</div>
-        </Grid>
-        <Grid item xs={6} md={2}>
-          <div>{card("Male", "18")}</div>
-        </Grid>
-        <Grid item xs={6} md={2}>
-          <div>{card("Female", "45")}</div>
+        <Grid item xs={6} md={4}>
+          <div>{card("Verified Participants",data.verified ,"verified",props)}</div>
         </Grid>
         <Grid item xs={6} md={4}>
-          <div>{card("Ratio of Members to Non-Members", "30:12")}</div>
+          <div>{card("Registered Participants", data.registered, "registered",props)}</div>
+        </Grid>
+        <Grid item xs={6} md={4}>
+          <div>{card("Male", data.male,"male",props)}</div>
+        </Grid>
+        <Grid item xs={6} md={4}>
+          <div>{card("Female", data.female,"female",props)}</div>
+        </Grid>
+        <Grid item xs={6} md={4}>
+          <div>{card("Male to Female ratio", data.male+':'+data.female,"ratio",props)}</div>
+        </Grid>
+        <Grid item xs={6} md={4}>
+          <div>{card("Members to Non-Members", data.ratio.membershipCount+':'+data.ratio.nonMembershipCount,'ratio', props)}</div>
         </Grid>
       </Grid>
     </Box>
