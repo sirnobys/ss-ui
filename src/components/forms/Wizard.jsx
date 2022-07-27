@@ -50,7 +50,7 @@ class MasterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStep: 6,
+      currentStep: 1,
       firstName: "",
       lastName: "",
       email: "",
@@ -90,10 +90,14 @@ class MasterForm extends React.Component {
   };
 
   async submit() {
+    let path = "/SSRegistration/api/v1/register"
+    if (this.props.type === "onsite"){
+        path = path+"/inHouse"
+    }
     try {
       let res = await axios({
         method: "post",
-        url: baseUrl + "/SSRegistration/api/v1/register",
+        url: baseUrl + path,
         data: {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
