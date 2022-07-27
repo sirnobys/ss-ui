@@ -23,7 +23,7 @@ import Table from "./Table";
 import axios from "axios";
 
 const drawerWidth = 240;
-const baseUrl = "http://single-summit.herokuapp.com";
+const baseUrl = "https://single-summit.herokuapp.com";
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
