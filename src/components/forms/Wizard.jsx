@@ -61,7 +61,18 @@ class MasterForm extends React.Component {
       location: "",
       media: [],
       load: false,
+      registered:[],
+      errorMessage: [],
     };
+  }
+
+
+  componentDidMount(){
+    axios
+    .get(baseUrl + "/SSRegistration/api/v1/report/registered")
+    .then((response) => {
+      this.setState({registered:response.data})
+    });
   }
 
   SimpleBackdrop() {
@@ -138,6 +149,18 @@ class MasterForm extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
+    if(this.state.registered.some(e=>String(e.email).toLowerCase().trim() === String(this.state.email).toLowerCase().trim())){
+      swal("email exists", {
+        icon: "error",
+      })
+      return
+    }
+    if(this.state.registered.some(e=>String(e.telephone).toLowerCase().trim() === String(this.state.tel).toLowerCase().trim())){
+      swal("Telephone exists", {
+        icon: "error",
+      })
+      return
+    }
     let currentStep = this.state.currentStep;
     currentStep = currentStep >= 5 ? 6 : currentStep + 1;
     this.setState({
@@ -338,7 +361,7 @@ function Step2(props) {
             name="email"
             onChange={props.handleChange}
             valueDefault={props.email}
-            type="text"
+            type="email"
             required
           />
         </MDBCol>
@@ -349,6 +372,7 @@ function Step2(props) {
             onChange={props.handleChange}
             valueDefault={props.tel}
             type="text"
+            required
           />
         </MDBCol>
       </MDBRow>
