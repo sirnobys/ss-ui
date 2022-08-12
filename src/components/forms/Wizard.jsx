@@ -20,8 +20,7 @@ import {
   Select,
 } from "@mui/material";
 
-const baseUrl =
-  "https://single-summit.herokuapp.com";
+const baseUrl = "https://single-summit.herokuapp.com";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,15 +34,13 @@ const MenuProps = {
 };
 
 const mediaList = [
-  "Friend",
-  "Twitter",
-  "Facebook",
-  "TV",
+  "friend",
+  "twitter",
+  "faceBook",
+  "televisionAd",
   "SMS",
-  "Billboard",
-  "Sunny-FM",
-  "Newspaper",
-  "Sweet-Melodies-FM",
+  "billboard",
+  "sweetMelodies",
 ];
 
 class MasterForm extends React.Component {
@@ -61,18 +58,21 @@ class MasterForm extends React.Component {
       location: "",
       media: [],
       load: false,
-      registered:[],
+      registered: [],
       errorMessage: [],
+      code: "",
     };
   }
 
+  componentDidMount() {
+    let ssCode = localStorage.getItem("ss-applicant-code");
+    this.setState({code:ssCode})
 
-  componentDidMount(){
     axios
-    .get(baseUrl + "/SSRegistration/api/v1/report/registered")
-    .then((response) => {
-      this.setState({registered:response.data})
-    });
+      .get(baseUrl + "/SSRegistration/api/v1/report/registered")
+      .then((response) => {
+        this.setState({ registered: response.data });
+      });
   }
 
   SimpleBackdrop() {
@@ -88,6 +88,14 @@ class MasterForm extends React.Component {
     );
   }
 
+  getCode = () => {
+    swal({ title:`your code is ${this.state.code}` });
+  };
+
+  saveCode = (code) => {
+    localStorage.setItem("ss-applicant-code", code);
+  };
+
   handleChange = (event) => {
     const { name, value } = event.target;
     if (event.target.name === "media") {
@@ -100,10 +108,20 @@ class MasterForm extends React.Component {
     }
   };
 
+
+  publicityAvenueToOgj=()=>{
+    let newObj={}
+    mediaList.forEach(e=>{
+      newObj[e] = this.state.media.includes(e)
+    })
+
+    return newObj
+  }
+
   async submit() {
-    let path = "/SSRegistration/api/v1/register"
-    if (this.props.type === "onsite"){
-        path = path+"/inHouse"
+    let path = "/SSRegistration/api/v1/register";
+    if (this.props.type === "onsite") {
+      path = path + "/inHouse";
     }
     try {
       let res = await axios({
@@ -117,24 +135,28 @@ class MasterForm extends React.Component {
           email: this.state.email,
           membershipStatus: this.state.member === "yes" ? true : false,
           firstTimerStatus: this.state.firstTime === "yes" ? true : false,
-          publicityAvenue: this.state.media.join('_'),
+          publicationData: this.publicityAvenueToOgj(),
         },
       });
-     
-      if (res){
-        this.setState({load:false})
-        swal("Form submitted successfully", {
+
+      if (res.data) {
+        this.saveCode(res.data.verificationCode)
+        this.setState({ load: false });
+        swal({
+          title: "Form submitted successfully",
+          text: 'your code is '+res.data.verificationCode,
           icon: "success",
-        }).then((okay) => {
+        })
+        .then((okay) => {
           if (okay) {
-            window.location.reload()
+            window.location.reload();
           }
         });
       }
       // return data;
     } catch (error) {
-      if (error){
-        this.setState({load:false})
+      if (error) {
+        this.setState({ load: false });
         swal("Submission failed", {
           icon: "error",
         }).then((okay) => {
@@ -149,17 +171,29 @@ class MasterForm extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    if(this.state.registered.some(e=>String(e.email).toLowerCase().trim() === String(this.state.email).toLowerCase().trim())){
+    if (
+      this.state.registered.some(
+        (e) =>
+          String(e.email).toLowerCase().trim() ===
+          String(this.state.email).toLowerCase().trim()
+      )
+    ) {
       swal("email exists", {
         icon: "error",
-      })
-      return
+      });
+      return;
     }
-    if(this.state.registered.some(e=>String(e.telephone).toLowerCase().trim() === String(this.state.tel).toLowerCase().trim())){
+    if (
+      this.state.registered.some(
+        (e) =>
+          String(e.telephone).toLowerCase().trim() ===
+          String(this.state.tel).toLowerCase().trim()
+      )
+    ) {
       swal("Telephone exists", {
         icon: "error",
-      })
-      return
+      });
+      return;
     }
     let currentStep = this.state.currentStep;
     currentStep = currentStep >= 5 ? 6 : currentStep + 1;
@@ -174,9 +208,9 @@ class MasterForm extends React.Component {
         buttons: true,
         dangerMode: false,
       }).then((confirm) => {
-        if(confirm){
-          this.setState({load:true})
-            this.submit();
+        if (confirm) {
+          this.setState({ load: true });
+          this.submit();
         }
       });
     }
@@ -244,6 +278,13 @@ class MasterForm extends React.Component {
     return (
       <div>
         {this.SimpleBackdrop()}
+        {this.state.code && this.props.type ==="onsite"?
+        <button className="btn btn-success" onClick={()=>this.getCode()}>
+          View Code
+        </button>
+        :""
+
+        }
         <MDBRow className="mt-5">
           <MDBCol lg="2" md="2" sm="2"></MDBCol>
           <MDBCol lg="8" md="8" sm="8">
@@ -553,7 +594,7 @@ function Step7(props) {
             <div className="mr-3 mb-3 mt-1 font-weight-bold">
               How did you hear about this event?
             </div>
-            <FormControl sx={{ m: 1, minWidth:"200px", maxWidth:"250px" }}>
+            <FormControl sx={{ m: 1, minWidth: "200px", maxWidth: "250px" }}>
               <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
