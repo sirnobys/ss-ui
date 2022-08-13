@@ -99,6 +99,7 @@ export default function Admin() {
   const [verified, setVerified] = React.useState('');
   const [registered, setRegistered] = React.useState([]);
   const [ratio, setRatio] = React.useState('');
+  const [socialMedia, setSocialMedia] = React.useState('');
   const defRow = (name) => {
     let url = "";
     if (name === "female") {
@@ -115,6 +116,9 @@ export default function Admin() {
     }
     if (name === "female") {
       url = "/SSRegistration/api/v1/report/registered/female";
+    }
+    if (name === "socialMedia") {
+      url = "SSRegistration/api/v1/report/socialMediaReport";
     }
     setName(name)
     fetchIndividuals(url);
@@ -158,6 +162,12 @@ export default function Admin() {
     });
   };
 
+  const fetchSocialMedia = (url) => {
+    axios.get(baseUrl + "/SSRegistration/api/v1/report/socialMediaReport").then((response) => {
+      setSocialMedia(response.data);
+    });
+  };
+
   React.useEffect(() => {
     axios
       .get(baseUrl + "/SSRegistration/api/v1/report/registered")
@@ -170,6 +180,7 @@ export default function Admin() {
       fetchMale()
       fetchVerified()
       fetchRatio()
+      fetchSocialMedia()
   }, []);
 
   return (
@@ -240,10 +251,10 @@ export default function Admin() {
         </List>
         <Divider />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3,background:"white" }}>
         <DrawerHeader />
         <Typography paragraph>
-          <Widgets defRow={defRow} data={{'male':male,'female':female, 'verified':verified, 'registered': registered, 'ratio': ratio}}/>
+          <Widgets defRow={defRow} data={{'male':male,'female':female, 'verified':verified, 'registered': registered, 'ratio': ratio, "socialMedia":socialMedia}}/>
         </Typography>
         <Typography paragraph>
           showing data for<b> {name}</b>

@@ -141,10 +141,14 @@ class MasterForm extends React.Component {
 
       if (res.data) {
         this.saveCode(res.data.verificationCode)
+        let message = ""
+        if (this.props.type === "onsite"){
+          message = 'your code is '+res.data.verificationCode
+        }
         this.setState({ load: false });
         swal({
           title: "Form submitted successfully",
-          text: 'your code is '+res.data.verificationCode,
+          text: message,
           icon: "success",
         })
         .then((okay) => {

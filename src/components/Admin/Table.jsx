@@ -31,11 +31,11 @@ const columns = [
 
 export default function Table(props) {
   return (
-    <div style={{ height: 400, width: "100%", background: "white" }}>
+    <div style={{ height: 700, width: "100%", background: "white" }}>
       <DataGrid
         rows={props.row}
         columns={columns}
-        pageSize={5}
+        pageSize={10}
         components={{ Toolbar: GridToolbar }}
         // rowsPerPageOptions={[5]}
         // checkboxSelection
